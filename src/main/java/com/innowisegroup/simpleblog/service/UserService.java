@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface UserService {
     List<UserDto> getAllUsers();
-    UserDto getUserById(int id);
+    UserDto getUserById(long id);
     void createUser(UserDto userDTO) throws UserLastnameValidationException;
-    void updateUser(int id, UserDto userDTO);
-    void deleteUser(int id);
+    void updateUser(long id, UserDto userDTO);
+    void deleteUser(long id);
     List<String> getUsersPasswords();
     List<UserDto> getSortedByNameUsersByRole(UserRole role);
     List<UserDto> getUsersWithCapitalizedNames();

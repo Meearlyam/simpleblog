@@ -1,14 +1,5 @@
 package com.innowisegroup.simpleblog.config;
 
-import com.innowisegroup.simpleblog.model.User;
-import com.innowisegroup.simpleblog.repository.GenericRepository;
-import com.innowisegroup.simpleblog.repository.GenericRepositoryImpl;
-import com.innowisegroup.simpleblog.service.UserService;
-import com.innowisegroup.simpleblog.service.UserServiceImpl;
-import com.innowisegroup.simpleblog.service.mapping.UserMappingService;
-import com.innowisegroup.simpleblog.service.mapping.UserMappingServiceImpl;
-import com.innowisegroup.simpleblog.service.validation.UserValidationService;
-import com.innowisegroup.simpleblog.service.validation.UserValidationServiceImpl;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,23 +7,26 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "com.innowisegroup.simpleblog.repository")
 @PropertySource({"classpath:application.properties"})
 @ComponentScan({
-        "com.innowisegroup.simpleblog.repository",
         "com.innowisegroup.simpleblog.service",
         "com.innowisegroup.simpleblog.controller"
 })
@@ -50,14 +44,36 @@ public class WebConfig implements WebMvcConfigurer {
         configurer.enable();
     }
 
-    @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.innowisegroup.simpleblog.model");
-        sessionFactory.setHibernateProperties(hibernateProperties());
+//    @Bean
+//    public LocalSessionFactoryBean sessionFactory() {
+//        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+//        sessionFactory.setDataSource(dataSource());
+//        sessionFactory.setPackagesToScan("com.innowisegroup.simpleblog.model");
+//        sessionFactory.setHibernateProperties(hibernateProperties());
+//
+//        return sessionFactory;
+//    }
 
-        return sessionFactory;
+    @Bean
+    public EntityManagerFactory entityManagerFactory() {
+
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setGenerateDdl(true);
+
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setPackagesToScan("com.innowisegroup.simpleblog.model");
+        factory.setDataSource(dataSource());
+        factory.afterPropertiesSet();
+
+        return factory.getObject();
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager txManager = new JpaTransactionManager();
+        txManager.setEntityManagerFactory(entityManagerFactory());
+        return txManager;
     }
 
     @Bean
@@ -71,13 +87,13 @@ public class WebConfig implements WebMvcConfigurer {
         return dataSource;
     }
 
-    @Bean
-    public PlatformTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager transactionManager
-                = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-        return transactionManager;
-    }
+//    @Bean
+//    public PlatformTransactionManager hibernateTransactionManager() {
+//        HibernateTransactionManager transactionManager
+//                = new HibernateTransactionManager();
+//        transactionManager.setSessionFactory(sessionFactory().getObject());
+//        return transactionManager;
+//    }
 
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
@@ -87,25 +103,5 @@ public class WebConfig implements WebMvcConfigurer {
                 "hibernate.dialect", env.getProperty("hibernate.dialect"));
 
         return hibernateProperties;
-    }
-
-    @Bean
-    public UserMappingService userMappingService() {
-        return new UserMappingServiceImpl();
-    }
-
-    @Bean
-    public GenericRepository<User> userRepository() {
-        return new GenericRepositoryImpl<>(sessionFactory().getObject(), User.class);
-    }
-
-    @Bean
-    public UserValidationService userValidationService() {
-        return new UserValidationServiceImpl();
-    }
-
-    @Bean
-    public UserService userService() {
-        return new UserServiceImpl(userRepository(), userMappingService(), userValidationService());
     }
 }
