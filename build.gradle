@@ -45,6 +45,7 @@ dependencies {
     implementation 'org.hibernate:hibernate-core:5.4.29.Final'
     implementation 'org.springframework:spring-orm:5.3.7'
     implementation 'org.postgresql:postgresql:42.2.19'
+    implementation 'org.springframework.data:spring-data-jpa:2.5.1'
     implementation 'org.apache.tomcat:tomcat-dbcp:10.0.6'
     compileOnly 'org.projectlombok:lombok:1.18.20'
 
