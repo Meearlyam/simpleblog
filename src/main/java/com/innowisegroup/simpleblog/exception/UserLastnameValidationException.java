@@ -1,6 +1,6 @@
 package com.innowisegroup.simpleblog.exception;
 
-public class UserLastnameValidationException extends Exception {
+public class UserLastnameValidationException extends RuntimeException {
 
     public UserLastnameValidationException() {
         super();
