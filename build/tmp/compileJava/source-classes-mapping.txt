@@ -1,7 +1,5 @@
 com/innowisegroup/simpleblog/model/UserRoleConverter.java
  com.innowisegroup.simpleblog.model.UserRoleConverter
-com/innowisegroup/simpleblog/service/validation/UserValidationService.java
- com.innowisegroup.simpleblog.service.validation.UserValidationService
 com/innowisegroup/simpleblog/dto/UserDto.java
  com.innowisegroup.simpleblog.dto.UserDto
 com/innowisegroup/simpleblog/model/User.java
@@ -12,23 +10,25 @@ com/innowisegroup/simpleblog/exception/UserLastnameValidationException.java
  com.innowisegroup.simpleblog.exception.UserLastnameValidationException
 com/innowisegroup/simpleblog/repository/UserRepository.java
  com.innowisegroup.simpleblog.repository.UserRepository
-com/innowisegroup/simpleblog/service/UserServiceImpl.java
- com.innowisegroup.simpleblog.service.UserServiceImpl
+com/innowisegroup/simpleblog/config/SimpleBlogWebApplicationInitializer.java
+ com.innowisegroup.simpleblog.config.SimpleBlogWebApplicationInitializer
 com/innowisegroup/simpleblog/service/mapping/UserMappingService.java
  com.innowisegroup.simpleblog.service.mapping.UserMappingService
-com/innowisegroup/simpleblog/controller/UserRestController.java
- com.innowisegroup.simpleblog.controller.UserRestController
+com/innowisegroup/simpleblog/config/WebConfig.java
+ com.innowisegroup.simpleblog.config.WebConfig
 com/innowisegroup/simpleblog/model/UserRole.java
  com.innowisegroup.simpleblog.model.UserRole
 com/innowisegroup/simpleblog/service/mapping/UserMappingServiceImpl.java
  com.innowisegroup.simpleblog.service.mapping.UserMappingServiceImpl
 com/innowisegroup/simpleblog/service/validation/UserValidationServiceImpl.java
  com.innowisegroup.simpleblog.service.validation.UserValidationServiceImpl
-com/innowisegroup/simpleblog/exception/handler/ApplicationGlobalExceptionHandler.java
- com.innowisegroup.simpleblog.exception.handler.ApplicationGlobalExceptionHandler
+com/innowisegroup/simpleblog/controller/UserRestController.java
+ com.innowisegroup.simpleblog.controller.UserRestController
+com/innowisegroup/simpleblog/service/UserServiceImpl.java
+ com.innowisegroup.simpleblog.service.UserServiceImpl
 com/innowisegroup/simpleblog/dto/ResponseWithExceptionDto.java
  com.innowisegroup.simpleblog.dto.ResponseWithExceptionDto
-com/innowisegroup/simpleblog/config/SimpleBlogWebApplicationInitializer.java
- com.innowisegroup.simpleblog.config.SimpleBlogWebApplicationInitializer
-com/innowisegroup/simpleblog/config/WebConfig.java
- com.innowisegroup.simpleblog.config.WebConfig
+com/innowisegroup/simpleblog/exception/handler/ApplicationGlobalExceptionHandler.java
+ com.innowisegroup.simpleblog.exception.handler.ApplicationGlobalExceptionHandler
+com/innowisegroup/simpleblog/service/validation/UserValidationService.java
+ com.innowisegroup.simpleblog.service.validation.UserValidationService
