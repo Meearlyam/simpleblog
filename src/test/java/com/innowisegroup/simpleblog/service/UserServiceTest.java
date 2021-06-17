@@ -4,7 +4,7 @@ import com.innowisegroup.simpleblog.dto.UserDto;
 import com.innowisegroup.simpleblog.exception.UserLastnameValidationException;
 import com.innowisegroup.simpleblog.model.User;
 import com.innowisegroup.simpleblog.model.UserRole;
-import com.innowisegroup.simpleblog.repository.GenericRepositoryImpl;
+import com.innowisegroup.simpleblog.repository.UserRepository;
 import com.innowisegroup.simpleblog.service.mapping.UserMappingService;
 import com.innowisegroup.simpleblog.service.mapping.UserMappingServiceImpl;
 import com.innowisegroup.simpleblog.service.validation.UserValidationService;
@@ -43,7 +43,7 @@ public class UserServiceTest {
     private static List<UserDto> USER_DTO_LIST;
 
     @Mock
-    private GenericRepositoryImpl<User> userRepository;
+    private UserRepository userRepository;
 
     @Spy
     private final UserMappingService userMappingServiceSpy = new UserMappingServiceImpl();
@@ -58,7 +58,7 @@ public class UserServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository, userMappingServiceSpy, userValidationService);
+//        userService = new UserServiceImpl(userMappingServiceSpy, userValidationService);
     }
 
     /**

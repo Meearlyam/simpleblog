@@ -50,6 +50,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.20'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.mockito:mockito-junit-jupiter:3.10.0'
 }
 
 //distributions {

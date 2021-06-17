@@ -4,7 +4,7 @@ import com.innowisegroup.simpleblog.dto.UserDto;
 import com.innowisegroup.simpleblog.exception.UserLastnameValidationException;
 import com.innowisegroup.simpleblog.model.User;
 import com.innowisegroup.simpleblog.model.UserRole;
-import com.innowisegroup.simpleblog.repository.GenericRepository;
+import com.innowisegroup.simpleblog.repository.UserRepository;
 import com.innowisegroup.simpleblog.service.mapping.UserMappingService;
 import com.innowisegroup.simpleblog.service.validation.UserValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +18,18 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final GenericRepository<User> userRepository;
+    private final UserRepository userRepository;
     private final UserMappingService userMappingService;
     private final UserValidationService userValidationService;
 
     @Autowired
-    public UserServiceImpl(GenericRepository<User> userRepository,
+    public UserServiceImpl(UserRepository userRepository,
                            UserMappingService userMappingService,
                            UserValidationService userValidationService) {
         this.userRepository = userRepository;
         this.userMappingService = userMappingService;
         this.userValidationService = userValidationService;
     }
-
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(int id) {
+    public UserDto getUserById(long id) {
         return userRepository.findById(id)
                 .map(userMappingService::convertToDto)
                 .orElse(null);
@@ -92,15 +91,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserDto userDto) throws UserLastnameValidationException {
         userValidationService.validate(userDto);
-        userRepository.create(
+        userRepository.save(
                 userMappingService.convertToEntity(userDto)
         );
     }
 
     @Override
-    public void updateUser(int id, UserDto userDto) {
+    public void updateUser(long id, UserDto userDto) {
         userDto.setId(id);
-        userRepository.update(
+        userRepository.save(
                 userMappingService.convertToEntity(
                         userDto
                 )
@@ -108,7 +107,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(long id) {
         userRepository.deleteById(id);
     }
 }
