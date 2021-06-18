@@ -58,7 +58,7 @@ public class UserServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-//        userService = new UserServiceImpl(userMappingServiceSpy, userValidationService);
+        userService = new UserServiceImpl(userRepository, userMappingServiceSpy, userValidationService);
     }
 
     /**
