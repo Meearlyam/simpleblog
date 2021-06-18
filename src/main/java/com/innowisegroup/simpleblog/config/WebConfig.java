@@ -19,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
@@ -31,7 +32,7 @@ import javax.sql.DataSource;
 })
 public class WebConfig implements WebMvcConfigurer {
 
-    private Environment env;
+    private final Environment env;
 
     @Autowired
     public WebConfig(Environment env) {
@@ -53,6 +54,7 @@ public class WebConfig implements WebMvcConfigurer {
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.innowisegroup.simpleblog.model");
         factory.setDataSource(dataSource());
+        factory.setJpaProperties(hibernateProperties());
         factory.afterPropertiesSet();
 
         return factory.getObject();
@@ -74,5 +76,15 @@ public class WebConfig implements WebMvcConfigurer {
         dataSource.setPassword(env.getProperty("jdbc.password"));
 
         return dataSource;
+    }
+
+    private Properties hibernateProperties() {
+        Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty(
+                "hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        hibernateProperties.setProperty(
+                "hibernate.dialect", env.getProperty("hibernate.dialect"));
+
+        return hibernateProperties;
     }
 }

@@ -993,6 +993,7 @@ false Zulu
     </sequence>
     <table id="32" parent="17" name="users">
       <ObjectId>20513</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>2974</StateNumber>
     </table>
