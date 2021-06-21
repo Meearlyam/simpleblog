@@ -57,13 +57,33 @@ public class UserRestController {
         return userService.getUsersPasswords();
     }
 
-    @GetMapping(value = "/byRole/{role}")
-    public List<UserDto> getSortedByNameUsersByRole(@PathVariable String role) {
-        return userService.getSortedByNameUsersByRole(UserRole.valueOfLabel(role));
+    @GetMapping(value = "/sorted/password/get/role/{role}")
+    public List<UserDto> getSortedByPasswordUsersByRole(@PathVariable String role) {
+        return userService.getSortedByPasswordUsersByRole(UserRole.valueOfLabel(role));
     }
 
     @GetMapping(value = "/capitalized")
     public List<UserDto> getUsersWithCapitalizedNames() {
         return userService.getUsersWithCapitalizedNames();
+    }
+
+    @GetMapping(value = "/ordered/lastname/desc")
+    public List<UserDto> getUsersOrderByLastnameDesc() {
+        return userService.getUsersOrderByLastnameDesc();
+    }
+
+    @GetMapping(value = "/ordered/role")
+    public List<UserDto> getUsersOrderByRole() {
+        return userService.getUsersOrderByRole();
+    }
+
+    @GetMapping(value = "/name/{name}")
+    public List<UserDto> getUsersByName(@PathVariable String name) {
+        return userService.findUsersByName(name);
+    }
+
+    @GetMapping(value = "/lastname/{lastname}")
+    public List<UserDto> getUsersByLastnameOrderByName(@PathVariable String lastname) {
+        return userService.findUsersByLastnameOrderByName(lastname);
     }
 }

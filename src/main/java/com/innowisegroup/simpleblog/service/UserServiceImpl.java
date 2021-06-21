@@ -55,6 +55,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void createUser(UserDto userDto) throws UserLastnameValidationException {
+        userValidationService.validate(userDto);
+        userRepository.save(
+                userMappingService.convertToEntity(userDto)
+        );
+    }
+
+    @Override
+    public void updateUser(long id, UserDto userDto) {
+        userDto.setId(id);
+        userRepository.save(
+                userMappingService.convertToEntity(
+                        userDto
+                )
+        );
+    }
+
+    @Override
+    public void deleteUser(long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
     public List<String> getUsersPasswords() {
         return userRepository.findAll()
                 .stream()
@@ -66,7 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getSortedByNameUsersByRole(UserRole role) {
+    public List<UserDto> getSortedByPasswordUsersByRole(UserRole role) {
         return userRepository.findAll()
                 .stream()
                 // null check is the only possible solution?
@@ -91,25 +114,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserDto userDto) throws UserLastnameValidationException {
-        userValidationService.validate(userDto);
-        userRepository.save(
-                userMappingService.convertToEntity(userDto)
-        );
+    public List<UserDto> getUsersOrderByLastnameDesc() {
+        return userRepository.findByOrderByLastnameDesc()
+                .stream()
+                .map(userMappingService::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void updateUser(long id, UserDto userDto) {
-        userDto.setId(id);
-        userRepository.save(
-                userMappingService.convertToEntity(
-                        userDto
-                )
-        );
+    public List<UserDto> getUsersOrderByRole() {
+        return userRepository.findByOrderByRole()
+                .stream()
+                .map(userMappingService::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteUser(long id) {
-        userRepository.deleteById(id);
+    public List<UserDto> findUsersByName(String name) {
+        return userRepository.findByName(name)
+                .stream()
+                .map(userMappingService::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDto> findUsersByLastnameOrderByName(String lastname) {
+        return userRepository.findByLastnameOrderByName(lastname)
+                .stream()
+                .map(userMappingService::convertToDto)
+                .collect(Collectors.toList());
     }
 }

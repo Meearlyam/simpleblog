@@ -9,7 +9,7 @@ plugins {
 
 group 'com.innowisegroup'
 version '1.0-SNAPSHOT'
-//
+
 //gretty {
 //    httpPort = 8080
 //    contextPath = 'simpleblog/'

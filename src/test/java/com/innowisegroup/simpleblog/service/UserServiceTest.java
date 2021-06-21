@@ -128,7 +128,7 @@ public class UserServiceTest {
     }
 
     /**
-     * {@link UserServiceImpl#getSortedByNameUsersByRole}
+     * {@link UserServiceImpl#getSortedByPasswordUsersByRole}
      */
     @Test
     public void testResultUserListContainsSpecifiedRoleOnly() {
@@ -136,7 +136,7 @@ public class UserServiceTest {
         userListConvertToUserDtoList();
 
 //        Mockito.when(userRepository.getAllUserEntities()).thenReturn(USER_LIST);
-        List<UserDto> result = userService.getSortedByNameUsersByRole(UserRole.valueOfLabel("aDmiN"));
+        List<UserDto> result = userService.getSortedByPasswordUsersByRole(UserRole.valueOfLabel("aDmiN"));
 
         Assertions.assertNotNull(result);
         Assertions.assertTrue(

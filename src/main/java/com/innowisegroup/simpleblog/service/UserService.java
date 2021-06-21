@@ -13,6 +13,10 @@ public interface UserService {
     void updateUser(long id, UserDto userDTO);
     void deleteUser(long id);
     List<String> getUsersPasswords();
-    List<UserDto> getSortedByNameUsersByRole(UserRole role);
+    List<UserDto> getSortedByPasswordUsersByRole(UserRole role);
     List<UserDto> getUsersWithCapitalizedNames();
+    List<UserDto> getUsersOrderByLastnameDesc();
+    List<UserDto> getUsersOrderByRole();
+    List<UserDto> findUsersByName(String name);
+    List<UserDto> findUsersByLastnameOrderByName(String lastname);
 }
