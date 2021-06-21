@@ -792,7 +792,7 @@ false YEKT
 false Z
 false Zulu
 </TimeZones>
-      <StartupTime>1623531208</StartupTime>
+      <StartupTime>1624093386</StartupTime>
     </root>
     <database id="2" parent="1" name="blogdb">
       <ObjectId>20050</ObjectId>
@@ -807,9 +807,9 @@ false Zulu
 13158||-9223372036854775808|U|G
 13158||10|U|G</Grants>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>2979</IntrospectionStateNumber>
+      <IntrospectionStateNumber>3026</IntrospectionStateNumber>
       <Current>1</Current>
-      <Relations>sequence|table|20511|20513|1
+      <Relations>sequence|table|20534|20536|1
 </Relations>
     </database>
     <database id="3" parent="1" name="postgres">
@@ -879,7 +879,7 @@ false Zulu
       <Comment>standard public schema</Comment>
       <StateNumber>287</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>2980</IntrospectionStateNumber>
+      <IntrospectionStateNumber>3027</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <extension id="18" parent="2" name="plpgsql">
@@ -979,65 +979,60 @@ false Zulu
       <HandlerId>335</HandlerId>
       <Type>index</Type>
     </access-method>
-    <sequence id="30" parent="17" name="users_sequence">
-      <ObjectId>20244</ObjectId>
+    <sequence id="30" parent="17" name="users_id_seq">
+      <ObjectId>20534</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>2882</StateNumber>
+      <StateNumber>3021</StateNumber>
       <DataType>bigint|0s</DataType>
     </sequence>
-    <sequence id="31" parent="17" name="users_id_seq">
-      <ObjectId>20511</ObjectId>
+    <table id="31" parent="17" name="users">
+      <ObjectId>20536</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>2974</StateNumber>
-      <DataType>bigint|0s</DataType>
-    </sequence>
-    <table id="32" parent="17" name="users">
-      <ObjectId>20513</ObjectId>
-      <Outdated>1</Outdated>
-      <Owner>postgres</Owner>
-      <StateNumber>2974</StateNumber>
+      <StateNumber>3021</StateNumber>
     </table>
-    <column id="33" parent="32" name="id">
+    <column id="32" parent="31" name="id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>2974</StateNumber>
-      <DefaultExpression>nextval(&apos;users_id_seq&apos;::regclass)</DefaultExpression>
+      <StateNumber>3021</StateNumber>
       <TypeId>20</TypeId>
+      <IdentityKind>by-default</IdentityKind>
     </column>
-    <column id="34" parent="32" name="email">
+    <column id="33" parent="31" name="email">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
-      <StateNumber>2974</StateNumber>
+      <StateNumber>3021</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="35" parent="32" name="lastname">
+    <column id="34" parent="31" name="lastname">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
-      <StateNumber>2974</StateNumber>
+      <NotNull>1</NotNull>
+      <StateNumber>3021</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="36" parent="32" name="name">
+    <column id="35" parent="31" name="name">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
-      <StateNumber>2974</StateNumber>
+      <NotNull>1</NotNull>
+      <StateNumber>3021</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="37" parent="32" name="password">
+    <column id="36" parent="31" name="password">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
-      <StateNumber>2974</StateNumber>
+      <StateNumber>3021</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="38" parent="32" name="role">
+    <column id="37" parent="31" name="role">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
-      <StateNumber>2974</StateNumber>
+      <StateNumber>3021</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="39" parent="32" name="users_pkey">
-      <ObjectId>20520</ObjectId>
-      <StateNumber>2974</StateNumber>
+    <index id="38" parent="31" name="users_pkey">
+      <ObjectId>20542</ObjectId>
+      <StateNumber>3021</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
@@ -1045,9 +1040,9 @@ false Zulu
       <CollationIds>0</CollationIds>
       <ClassIds>3124</ClassIds>
     </index>
-    <key id="40" parent="32" name="users_pkey">
-      <ObjectId>20521</ObjectId>
-      <StateNumber>2974</StateNumber>
+    <key id="39" parent="31" name="users_pkey">
+      <ObjectId>20543</ObjectId>
+      <StateNumber>3021</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>users_pkey</UnderlyingIndexName>

@@ -6,10 +6,9 @@ import lombok.Data;
 import java.util.Date;
 
 @AllArgsConstructor
-//@NoArgsConstructor
-//@Getter @Setter
 @Data
 public class ResponseWithExceptionDto {
+    private String cause;
     private String message;
     private Date date;
 }

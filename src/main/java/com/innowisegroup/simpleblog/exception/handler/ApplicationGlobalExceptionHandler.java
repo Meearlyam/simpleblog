@@ -1,7 +1,7 @@
 package com.innowisegroup.simpleblog.exception.handler;
 
 import com.innowisegroup.simpleblog.dto.ResponseWithExceptionDto;
-import com.innowisegroup.simpleblog.exception.UserLastnameValidationException;
+import com.innowisegroup.simpleblog.exception.UserValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -13,10 +13,11 @@ import java.util.Date;
 public class ApplicationGlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(UserLastnameValidationException.class)
-    public ResponseWithExceptionDto handleUserLastnameValidationException(UserLastnameValidationException ex) {
+    @ExceptionHandler(UserValidationException.class)
+    public ResponseWithExceptionDto handleUserLastnameValidationException(UserValidationException ex) {
         return new ResponseWithExceptionDto(
-                ex.getMessage(),
+                ex.getClass().getName(),
+                ex.getCause().getMessage(),
                 new Date());
     }
 }
