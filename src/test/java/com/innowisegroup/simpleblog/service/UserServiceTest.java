@@ -1,14 +1,11 @@
 package com.innowisegroup.simpleblog.service;
 
 import com.innowisegroup.simpleblog.dto.UserDto;
-import com.innowisegroup.simpleblog.exception.UserLastnameValidationException;
 import com.innowisegroup.simpleblog.model.User;
 import com.innowisegroup.simpleblog.model.UserRole;
 import com.innowisegroup.simpleblog.repository.UserRepository;
 import com.innowisegroup.simpleblog.service.mapping.UserMappingService;
 import com.innowisegroup.simpleblog.service.mapping.UserMappingServiceImpl;
-import com.innowisegroup.simpleblog.service.validation.UserValidationService;
-import com.innowisegroup.simpleblog.service.validation.UserValidationServiceImpl;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -48,9 +45,6 @@ public class UserServiceTest {
     @Spy
     private final UserMappingService userMappingServiceSpy = new UserMappingServiceImpl();
 
-    @Spy
-    private final UserValidationService userValidationService = new UserValidationServiceImpl();
-
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -58,7 +52,7 @@ public class UserServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository, userMappingServiceSpy, userValidationService);
+        userService = new UserServiceImpl(userRepository, userMappingServiceSpy);
     }
 
     /**
@@ -147,52 +141,6 @@ public class UserServiceTest {
                 Mockito.times(USER_LIST.size() + result.size())
         )
                 .convertToDto(any());
-    }
-
-    /**
-     * {@link UserValidationServiceImpl#validate(UserDto)}
-     */
-    @Test
-    public void testUserLastnameValidationExceptionIsThrownWhenLastnameIsNull() {
-        Assertions.assertThrows(UserLastnameValidationException.class,
-                () -> userValidationService.validate(new UserDto()));
-    }
-
-    /**
-     * {@link UserValidationServiceImpl#validate(UserDto)}
-     */
-    @Test
-    public void testUserLastnameValidationExceptionIsNotThrownWhenLastnameIsValid() {
-        Assertions.assertDoesNotThrow(() -> {
-            UserDto userDto = new UserDto();
-            userDto.setLastname("Name");
-            userValidationService.validate(userDto);
-        });
-    }
-
-    /**
-     * {@link UserValidationServiceImpl#validate(UserDto)}
-     */
-    @Test
-    public void testUserLastnameValidationExceptionIsNotThrownWhenLastnameContainsEmptyCharacters() {
-        Assertions.assertDoesNotThrow(() -> {
-            UserDto userDto = new UserDto();
-            userDto.setLastname(" Name\n");
-            userValidationService.validate(userDto);
-        });
-    }
-
-    /**
-     * {@link UserValidationServiceImpl#validate(UserDto)}
-     */
-    @Test
-    public void testUserLastnameValidationExceptionIsThrownWhenLastnameIsInvalid() {
-        Assertions.assertThrows(UserLastnameValidationException.class,
-                () -> {
-                    UserDto userDto = new UserDto();
-                    userDto.setLastname(" \n");
-                    userValidationService.validate(userDto);
-                });
     }
 
     private static boolean checkUserRole(UserDto userDto, UserRole role) {

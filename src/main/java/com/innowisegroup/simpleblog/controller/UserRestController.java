@@ -2,7 +2,7 @@ package com.innowisegroup.simpleblog.controller;
 
 import com.innowisegroup.simpleblog.model.UserRole;
 import com.innowisegroup.simpleblog.dto.UserDto;
-import com.innowisegroup.simpleblog.exception.UserLastnameValidationException;
+import com.innowisegroup.simpleblog.exception.UserValidationException;
 import com.innowisegroup.simpleblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,8 +38,13 @@ public class UserRestController {
     }
 
     @PostMapping
-    public void createUser(@RequestBody UserDto userDto) throws UserLastnameValidationException {
-        userService.createUser(userDto);
+    public void createUser(@RequestBody UserDto userDto) throws UserValidationException {
+        try {
+            userService.createUser(userDto);
+        }
+        catch (RuntimeException e) {
+            throw new UserValidationException(e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{id}")

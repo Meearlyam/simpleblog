@@ -1,12 +1,11 @@
 package com.innowisegroup.simpleblog.service;
 
 import com.innowisegroup.simpleblog.dto.UserDto;
-import com.innowisegroup.simpleblog.exception.UserLastnameValidationException;
+import com.innowisegroup.simpleblog.exception.UserValidationException;
 import com.innowisegroup.simpleblog.model.User;
 import com.innowisegroup.simpleblog.model.UserRole;
 import com.innowisegroup.simpleblog.repository.UserRepository;
 import com.innowisegroup.simpleblog.service.mapping.UserMappingService;
-import com.innowisegroup.simpleblog.service.validation.UserValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,15 +21,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMappingService userMappingService;
-    private final UserValidationService userValidationService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           UserMappingService userMappingService,
-                           UserValidationService userValidationService) {
+                           UserMappingService userMappingService) {
         this.userRepository = userRepository;
         this.userMappingService = userMappingService;
-        this.userValidationService = userValidationService;
     }
 
     @Override
@@ -55,8 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserDto userDto) throws UserLastnameValidationException {
-        userValidationService.validate(userDto);
+    public void createUser(UserDto userDto) throws UserValidationException {
         userRepository.save(
                 userMappingService.convertToEntity(userDto)
         );
