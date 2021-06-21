@@ -10,18 +10,16 @@ com/innowisegroup/simpleblog/exception/UserLastnameValidationException.java
  com.innowisegroup.simpleblog.exception.UserLastnameValidationException
 com/innowisegroup/simpleblog/repository/UserRepository.java
  com.innowisegroup.simpleblog.repository.UserRepository
-com/innowisegroup/simpleblog/config/SimpleBlogWebApplicationInitializer.java
- com.innowisegroup.simpleblog.config.SimpleBlogWebApplicationInitializer
 com/innowisegroup/simpleblog/service/mapping/UserMappingService.java
  com.innowisegroup.simpleblog.service.mapping.UserMappingService
-com/innowisegroup/simpleblog/config/WebConfig.java
- com.innowisegroup.simpleblog.config.WebConfig
 com/innowisegroup/simpleblog/model/UserRole.java
  com.innowisegroup.simpleblog.model.UserRole
 com/innowisegroup/simpleblog/service/mapping/UserMappingServiceImpl.java
  com.innowisegroup.simpleblog.service.mapping.UserMappingServiceImpl
 com/innowisegroup/simpleblog/service/validation/UserValidationServiceImpl.java
  com.innowisegroup.simpleblog.service.validation.UserValidationServiceImpl
+com/innowisegroup/simpleblog/Application.java
+ com.innowisegroup.simpleblog.Application
 com/innowisegroup/simpleblog/controller/UserRestController.java
  com.innowisegroup.simpleblog.controller.UserRestController
 com/innowisegroup/simpleblog/service/UserServiceImpl.java
