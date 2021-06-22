@@ -12,6 +12,7 @@ public interface UserService {
     void createUser(UserDto userDTO) throws UserValidationException;
     void updateUser(long id, UserDto userDTO);
     void deleteUser(long id);
+
     List<String> getUsersPasswords();
     List<UserDto> getSortedByPasswordUsersByRole(UserRole role);
     List<UserDto> getUsersWithCapitalizedNames();
