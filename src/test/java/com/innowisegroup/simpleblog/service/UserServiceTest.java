@@ -4,14 +4,14 @@ import com.innowisegroup.simpleblog.dto.UserDto;
 import com.innowisegroup.simpleblog.model.User;
 import com.innowisegroup.simpleblog.model.UserRole;
 import com.innowisegroup.simpleblog.repository.UserRepository;
-import com.innowisegroup.simpleblog.service.mapping.UserMappingService;
-import com.innowisegroup.simpleblog.service.mapping.UserMappingServiceImpl;
+import com.innowisegroup.simpleblog.service.mapping.UserMapper;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -43,7 +43,7 @@ public class UserServiceTest {
     private UserRepository userRepository;
 
     @Spy
-    private final UserMappingService userMappingServiceSpy = new UserMappingServiceImpl();
+    private final UserMapper userMapperSpy = Mappers.getMapper(UserMapper.class);
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -52,7 +52,7 @@ public class UserServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository, userMappingServiceSpy);
+        userService = new UserServiceImpl(userRepository, userMapperSpy);
     }
 
     /**
@@ -63,10 +63,10 @@ public class UserServiceTest {
         fillSortTestUserList();
         fakeSortUserDtoList();
         Mockito.when(userRepository.findAll()).thenReturn(USER_LIST);
-        Mockito.when(userMappingServiceSpy.convertToDto(USER_LIST.get(0))).thenReturn(USER_DTO_LIST.get(0));
-        Mockito.when(userMappingServiceSpy.convertToDto(USER_LIST.get(1))).thenReturn(USER_DTO_LIST.get(1));
-        Mockito.when(userMappingServiceSpy.convertToDto(USER_LIST.get(2))).thenReturn(USER_DTO_LIST.get(2));
-        Mockito.when(userMappingServiceSpy.convertToDto(USER_LIST.get(3))).thenReturn(USER_DTO_LIST.get(3));
+        Mockito.when(userMapperSpy.convertToDto(USER_LIST.get(0))).thenReturn(USER_DTO_LIST.get(0));
+        Mockito.when(userMapperSpy.convertToDto(USER_LIST.get(1))).thenReturn(USER_DTO_LIST.get(1));
+        Mockito.when(userMapperSpy.convertToDto(USER_LIST.get(2))).thenReturn(USER_DTO_LIST.get(2));
+        Mockito.when(userMapperSpy.convertToDto(USER_LIST.get(3))).thenReturn(USER_DTO_LIST.get(3));
         List<UserDto> sorted = userService.getAllUsers();
         MatcherAssert.assertThat(sorted, Matchers.contains(
                 USER_DTO_LIST.get(0),
@@ -137,7 +137,7 @@ public class UserServiceTest {
                 result.stream()
                         .allMatch(userDto -> UserServiceTest.checkUserRole(userDto, UserRole.ADMIN)));
         Mockito.verify(
-                userMappingServiceSpy,
+                userMapperSpy,
                 Mockito.times(USER_LIST.size() + result.size())
         )
                 .convertToDto(any());
@@ -169,7 +169,7 @@ public class UserServiceTest {
         USER_DTO_LIST = new ArrayList<>();
         List<UserDto> unsortedUsersDtos = USER_LIST
                 .stream()
-                .map(userMappingServiceSpy::convertToDto)
+                .map(userMapperSpy::convertToDto)
                 .collect(Collectors.toList());
 
         UserDto uDto1 = unsortedUsersDtos.get(0);
@@ -186,7 +186,7 @@ public class UserServiceTest {
     public void userListConvertToUserDtoList() {
         USER_DTO_LIST = USER_LIST
                 .stream()
-                .map(userMappingServiceSpy::convertToDto)
+                .map(userMapperSpy::convertToDto)
                 .collect(Collectors.toList());
     }
 

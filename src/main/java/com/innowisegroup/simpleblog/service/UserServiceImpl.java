@@ -5,7 +5,7 @@ import com.innowisegroup.simpleblog.exception.UserValidationException;
 import com.innowisegroup.simpleblog.model.User;
 import com.innowisegroup.simpleblog.model.UserRole;
 import com.innowisegroup.simpleblog.repository.UserRepository;
-import com.innowisegroup.simpleblog.service.mapping.UserMappingService;
+import com.innowisegroup.simpleblog.service.mapping.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,20 +20,20 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserMappingService userMappingService;
+    private final UserMapper userMapper;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           UserMappingService userMappingService) {
+                           UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.userMappingService = userMappingService;
+        this.userMapper = userMapper;
     }
 
     @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(userMappingService::convertToDto)
+                .map(userMapper::convertToDto)
                 .sorted(
                         Comparator.comparing(UserDto::getName, Comparator.nullsLast(Comparator.naturalOrder()))
                                 .thenComparing(UserDto::getLastname, Comparator.nullsLast(Comparator.naturalOrder())
@@ -46,14 +46,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(long id) {
         return userRepository.findById(id)
-                .map(userMappingService::convertToDto)
+                .map(userMapper::convertToDto)
                 .orElse(null);
     }
 
     @Override
     public void createUser(UserDto userDto) throws UserValidationException {
         userRepository.save(
-                userMappingService.convertToEntity(userDto)
+                userMapper.convertToEntity(userDto)
         );
     }
 
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(long id, UserDto userDto) {
         userDto.setId(id);
         userRepository.save(
-                userMappingService.convertToEntity(
+                userMapper.convertToEntity(
                         userDto
                 )
         );
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
                         && user.getRole() == role
                         )
                 .sorted(Comparator.comparing(User::getPassword))
-                .map(userMappingService::convertToDto)
+                .map(userMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
                 .peek(user -> user.setName(String.valueOf(user.getName().charAt(0)).toUpperCase()
                         + user.getName().substring(1).toLowerCase())
                 )
-                .map(userMappingService::convertToDto)
+                .map(userMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getUsersOrderByLastnameDesc() {
         return userRepository.findByOrderByLastnameDesc()
                 .stream()
-                .map(userMappingService::convertToDto)
+                .map(userMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getUsersOrderByRole() {
         return userRepository.findByOrderByRole()
                 .stream()
-                .map(userMappingService::convertToDto)
+                .map(userMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findUsersByName(String name) {
         return userRepository.findByName(name)
                 .stream()
-                .map(userMappingService::convertToDto)
+                .map(userMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findUsersByLastnameOrderByName(String lastname) {
         return userRepository.findByLastnameOrderByName(lastname)
                 .stream()
-                .map(userMappingService::convertToDto)
+                .map(userMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 }
