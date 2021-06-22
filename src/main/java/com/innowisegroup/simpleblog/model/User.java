@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "users")
+@Table(name = "blog_user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
