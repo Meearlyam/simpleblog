@@ -56,7 +56,7 @@ public class UserServiceTest {
     }
 
     /**
-     * {@link UserServiceImpl#getAllUsers()}
+     * {@link UserServiceImpl#findAll()}
      */
     @Test
     public void testUsersSortWhileGetAllUsers() {
@@ -67,7 +67,7 @@ public class UserServiceTest {
         Mockito.when(userMapperSpy.convertToDto(USER_LIST.get(1))).thenReturn(USER_DTO_LIST.get(1));
         Mockito.when(userMapperSpy.convertToDto(USER_LIST.get(2))).thenReturn(USER_DTO_LIST.get(2));
         Mockito.when(userMapperSpy.convertToDto(USER_LIST.get(3))).thenReturn(USER_DTO_LIST.get(3));
-        List<UserDto> sorted = userService.getAllUsers();
+        List<UserDto> sorted = userService.findAll();
         MatcherAssert.assertThat(sorted, Matchers.contains(
                 USER_DTO_LIST.get(0),
                 USER_DTO_LIST.get(1),
@@ -77,7 +77,7 @@ public class UserServiceTest {
     }
 
     /**
-     * {@link UserServiceImpl#getUsersWithCapitalizedNames()}
+     * {@link UserServiceImpl#findAllWithCapitalizedNames()}
      */
     @Test
     public void testUserNameCapitalizingSmallFirstLetter() {
@@ -85,14 +85,14 @@ public class UserServiceTest {
         user.setName("name");
 
         Mockito.when(userRepository.findAll()).thenReturn(Collections.singletonList(user));
-        List<UserDto> result = userService.getUsersWithCapitalizedNames();
+        List<UserDto> result = userService.findAllWithCapitalizedNames();
 
         Assertions.assertEquals(1, result.size());
         Assertions.assertEquals("Name", result.get(0).getName());
     }
 
     /**
-     * {@link UserServiceImpl#getUsersWithCapitalizedNames()}
+     * {@link UserServiceImpl#findAllWithCapitalizedNames()}
      */
     @Test
     public void testUserNameCapitalizingBigFirstLetter() {
@@ -100,14 +100,14 @@ public class UserServiceTest {
         user.setName("Name");
 
         Mockito.when(userRepository.findAll()).thenReturn(Collections.singletonList(user));
-        List<UserDto> result = userService.getUsersWithCapitalizedNames();
+        List<UserDto> result = userService.findAllWithCapitalizedNames();
 
         Assertions.assertEquals(1, result.size());
         Assertions.assertEquals("Name", result.get(0).getName());
     }
 
     /**
-     * {@link UserServiceImpl#getUsersWithCapitalizedNames()}
+     * {@link UserServiceImpl#findAllWithCapitalizedNames()}
      */
     @Test
     public void testUserNameCapitalizingFirstIsNotLetter() {
@@ -115,14 +115,14 @@ public class UserServiceTest {
         user.setName("$ame");
 
         Mockito.when(userRepository.findAll()).thenReturn(List.of(user));
-        List<UserDto> result = userService.getUsersWithCapitalizedNames();
+        List<UserDto> result = userService.findAllWithCapitalizedNames();
 
         Assertions.assertEquals(1, result.size());
         Assertions.assertEquals("$ame", result.get(0).getName());
     }
 
     /**
-     * {@link UserServiceImpl#getSortedByPasswordUsersByRole}
+     * {@link UserServiceImpl#findSortedByPasswordUsersByRole}
      */
     @Test
     public void testResultUserListContainsSpecifiedRoleOnly() {
@@ -130,7 +130,7 @@ public class UserServiceTest {
         userListConvertToUserDtoList();
 
 //        Mockito.when(userRepository.getAllUserEntities()).thenReturn(USER_LIST);
-        List<UserDto> result = userService.getSortedByPasswordUsersByRole(UserRole.valueOfLabel("aDmiN"));
+        List<UserDto> result = userService.findSortedByPasswordUsersByRole(UserRole.valueOfLabel("aDmiN"));
 
         Assertions.assertNotNull(result);
         Assertions.assertTrue(

@@ -39,17 +39,18 @@ public class UserRestController {
             responseContainer = "List"
     )
     public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+        return userService.findAll();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     @ApiOperation(
             value = "Finds user by id",
             notes = "Provide an id to look up specific user",
             response = UserDto.class
     )
-    public UserDto getUserById(@ApiParam(required = true) @PathVariable int id) {
-        return userService.getUserById(id);
+    public UserDto getUserById(
+            @ApiParam("User's id") @PathVariable int id) {
+        return userService.findById(id);
     }
 
     @PostMapping
@@ -57,9 +58,10 @@ public class UserRestController {
             value = "Creates new user",
             notes = "Provide valid user data to create new user"
     )
-    public void createUser(@ApiParam(required = true) @RequestBody UserDto userDto) throws UserValidationException {
+    public void createUser(
+            @ApiParam("User's model data") @RequestBody UserDto userDto) throws UserValidationException {
         try {
-            userService.createUser(userDto);
+            userService.create(userDto);
         }
         catch (RuntimeException e) {
             throw new UserValidationException(e.getMessage(), e);
@@ -71,8 +73,10 @@ public class UserRestController {
             value = "Updates the user with given id",
             notes = "Provide user valid data as request body abd id as request param to update existing user"
     )
-    public void updateUser(@ApiParam(required = true) @PathVariable int id, @RequestBody UserDto userDto) {
-        userService.updateUser(id, userDto);
+    public void updateUser(
+            @ApiParam("User's id") @PathVariable int id,
+            @ApiParam("User's model data") @RequestBody UserDto userDto) {
+        userService.updateById(id, userDto);
     }
 
     @DeleteMapping("/{id}")
@@ -80,11 +84,12 @@ public class UserRestController {
             value = "Deletes the user with given id",
             notes = "Provide an id to delete user"
     )
-    public void deleteUser(@ApiParam(required = true) @PathVariable int id) {
-        userService.deleteUser(id);
+    public void deleteUser(
+            @ApiParam("User's id") @PathVariable int id) {
+        userService.deleteById(id);
     }
 
-    @GetMapping(value = "/passwords")
+    @GetMapping("/passwords")
     @ApiOperation(
             value = "Gets passwords of all users",
             notes = "Retrieves all users passwords and returns them as a list",
@@ -92,21 +97,22 @@ public class UserRestController {
             responseContainer = "List"
     )
     public List<String> getUsersPasswords() {
-        return userService.getUsersPasswords();
+        return userService.getAllPasswords();
     }
 
-    @GetMapping(value = "/sorted/password/get/role/{role}")
+    @GetMapping("/sorted/password/get/role/{role}")
     @ApiOperation(
             value = "Gets sorted by password user with specified role",
             notes = "Provide a role an you get users of the specified role which are sorted alphabetically by password as a list",
             response = UserDto.class,
             responseContainer = "List"
     )
-    public List<UserDto> getSortedByPasswordUsersByRole(@ApiParam(required = true) @PathVariable String role) {
-        return userService.getSortedByPasswordUsersByRole(UserRole.valueOfLabel(role));
+    public List<UserDto> getSortedByPasswordUsersByRole(
+            @ApiParam("User's role") @PathVariable String role) {
+        return userService.findSortedByPasswordUsersByRole(UserRole.valueOfLabel(role));
     }
 
-    @GetMapping(value = "/capitalized")
+    @GetMapping("/capitalized")
     @ApiOperation(
             value = "Gets all users capitalizing their names",
             notes = "Retrieves all users and returns them as a list after capitalizing their names",
@@ -114,10 +120,10 @@ public class UserRestController {
             responseContainer = "List"
     )
     public List<UserDto> getUsersWithCapitalizedNames() {
-        return userService.getUsersWithCapitalizedNames();
+        return userService.findAllWithCapitalizedNames();
     }
 
-    @GetMapping(value = "/ordered/lastname/desc")
+    @GetMapping("/ordered/lastname/desc")
     @ApiOperation(
             value = "Gets users descending ordered by last name",
             notes = "Retrieves all users in descending order by their last names and returns them as a list",
@@ -125,10 +131,10 @@ public class UserRestController {
             responseContainer = "List"
     )
     public List<UserDto> getUsersOrderByLastnameDesc() {
-        return userService.getUsersOrderByLastnameDesc();
+        return userService.findAllOrderedByLastnameDesc();
     }
 
-    @GetMapping(value = "/ordered/role")
+    @GetMapping("/ordered/role")
     @ApiOperation(
             value = "Gets all users ordered alphabetically by role",
             notes = "Retrieves all users ordered alphabetically by role and returns them as a list",
@@ -136,28 +142,65 @@ public class UserRestController {
             responseContainer = "List"
     )
     public List<UserDto> getUsersOrderByRole() {
-        return userService.getUsersOrderByRole();
+        return userService.findAllOrderedByRole();
     }
 
-    @GetMapping(value = "/name/{name}")
+    @GetMapping("/name/{name}")
     @ApiOperation(
             value = "Gets users with the specified name",
             notes = "Provide a name and you get all users with such name as a list",
             response = UserDto.class,
             responseContainer = "List"
     )
-    public List<UserDto> getUsersByName(@ApiParam(required = true) @PathVariable String name) {
-        return userService.findUsersByName(name);
+    public List<UserDto> getUsersByName(
+            @ApiParam("User's name") @PathVariable String name) {
+        return userService.findByName(name);
     }
 
-    @GetMapping(value = "/lastname/{lastname}")
+    @GetMapping("/lastname/{lastname}")
     @ApiOperation(
             value = "Gets users with specified last name ordered by name",
             notes = "Provide a last name and you get users with such last name ordered alphabetically by name as a list",
             response = UserDto.class,
             responseContainer = "List"
     )
-    public List<UserDto> getUsersByLastnameOrderByName(@ApiParam(required = true) @PathVariable String lastname) {
-        return userService.findUsersByLastnameOrderByName(lastname);
+    public List<UserDto> getUsersByLastnameOrderByName(
+            @ApiParam("User's lastname") @PathVariable String lastname) {
+        return userService.findByLastnameOrderedByName(lastname);
+    }
+
+    @GetMapping("/sorted/email/desc")
+    @ApiOperation(
+            value = "Gets all users sorted by email descending",
+            notes = "Retrieves all users, sort them by email in a descending order and returns them as a list",
+            response = UserDto.class,
+            responseContainer = "List"
+    )
+    public List<UserDto> getAllUsersSortedByEmailDescending() {
+        return userService.findAllSortedByEmailDescending();
+    }
+
+    @GetMapping("/page/{pageNum}/{pageSize}")
+    @ApiOperation(
+            value = "Gets users of specified page",
+            notes = "Provide page num and size and you get users of such page as a list",
+            response = UserDto.class,
+            responseContainer = "List"
+    )
+    public List<UserDto> getUsersByPageWithNumAndSize(
+            @ApiParam("Page number which starts from 0") @PathVariable int pageNum,
+            @ApiParam("Size of page") @PathVariable int pageSize) {
+        return userService.findByPageWithNumAndSize(pageNum, pageSize);
+    }
+
+    @GetMapping("sorted/lastname/page/{pageSize}")
+    @ApiOperation(
+            value = "Gets sorted by last name users of 1st page with specified size",
+            notes = "Provide page size and you get users of 1st page sorted by last name as a list",
+            response = UserDto.class,
+            responseContainer = "List"
+    )
+    public List<UserDto> getUsersByFirstPageWithSizeSortedByLastname(@PathVariable int pageSize) {
+        return userService.findByFirstPageWithSizeSortedByLastname(pageSize);
     }
 }

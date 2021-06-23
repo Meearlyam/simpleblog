@@ -7,6 +7,9 @@ import com.innowisegroup.simpleblog.model.UserRole;
 import com.innowisegroup.simpleblog.repository.UserRepository;
 import com.innowisegroup.simpleblog.service.mapping.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<UserDto> findAll() {
         return userRepository.findAll()
                 .stream()
                 .map(userMapper::convertToDto)
@@ -44,21 +47,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(long id) {
+    public UserDto findById(long id) {
         return userRepository.findById(id)
                 .map(userMapper::convertToDto)
                 .orElse(null);
     }
 
     @Override
-    public void createUser(UserDto userDto) throws UserValidationException {
+    public void create(UserDto userDto) throws UserValidationException {
         userRepository.save(
                 userMapper.convertToEntity(userDto)
         );
     }
 
     @Override
-    public void updateUser(long id, UserDto userDto) {
+    public void updateById(long id, UserDto userDto) {
         userDto.setId(id);
         userRepository.save(
                 userMapper.convertToEntity(
@@ -68,12 +71,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(long id) {
+    public void deleteById(long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public List<String> getUsersPasswords() {
+    public List<String> getAllPasswords() {
         return userRepository.findAll()
                 .stream()
                 .map(User::getPassword)
@@ -84,7 +87,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getSortedByPasswordUsersByRole(UserRole role) {
+    public List<UserDto> findSortedByPasswordUsersByRole(UserRole role) {
         return userRepository.findAll()
                 .stream()
                 // null check is the only possible solution?
@@ -97,7 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsersWithCapitalizedNames() {
+    public List<UserDto> findAllWithCapitalizedNames() {
         return userRepository.findAll()
                 .stream()
                 .filter(user -> user.getName() != null)
@@ -109,7 +112,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsersOrderByLastnameDesc() {
+    public List<UserDto> findAllOrderedByLastnameDesc() {
         return userRepository.findByOrderByLastnameDesc()
                 .stream()
                 .map(userMapper::convertToDto)
@@ -117,7 +120,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsersOrderByRole() {
+    public List<UserDto> findAllOrderedByRole() {
         return userRepository.findByOrderByRole()
                 .stream()
                 .map(userMapper::convertToDto)
@@ -125,7 +128,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findUsersByName(String name) {
+    public List<UserDto> findByName(String name) {
         return userRepository.findByName(name)
                 .stream()
                 .map(userMapper::convertToDto)
@@ -133,8 +136,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findUsersByLastnameOrderByName(String lastname) {
+    public List<UserDto> findByLastnameOrderedByName(String lastname) {
         return userRepository.findByLastnameOrderByName(lastname)
+                .stream()
+                .map(userMapper::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDto> findAllSortedByEmailDescending() {
+        return userRepository.findAll(Sort.by(Sort.Direction.DESC, "email"))
+                .stream()
+                .map(userMapper::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDto> findByPageWithNumAndSize(int pageNum, int pageSize) {
+        Pageable definedPage = PageRequest.of(pageNum, pageSize);
+
+        return userRepository.findAll(definedPage)
+                .stream()
+                .map(userMapper::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDto> findByFirstPageWithSizeSortedByLastname(int pageSize) {
+        Pageable sortedByLastname = PageRequest.of(0, pageSize, Sort.by("lastname"));
+        return userRepository.findAll(sortedByLastname)
                 .stream()
                 .map(userMapper::convertToDto)
                 .collect(Collectors.toList());
