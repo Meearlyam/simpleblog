@@ -1,15 +1,14 @@
 package com.innowisegroup.simpleblog.service;
 
-import com.innowisegroup.simpleblog.model.UserRole;
 import com.innowisegroup.simpleblog.dto.UserDto;
-import com.innowisegroup.simpleblog.exception.UserValidationException;
+import com.innowisegroup.simpleblog.model.UserRole;
 
 import java.util.List;
 
 public interface UserService {
     List<UserDto> findAll();
     UserDto findById(long id);
-    void create(UserDto userDTO) throws UserValidationException;
+    void create(UserDto userDTO);
     void updateById(long id, UserDto userDTO);
     void deleteById(long id);
 

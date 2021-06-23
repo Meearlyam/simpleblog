@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @Api(description = "Users REST controller")
+@Validated
 public class UserRestController {
 
     private final UserService userService;
@@ -60,7 +61,7 @@ public class UserRestController {
             value = "Creates new user",
             notes = "Provide valid user data to create new user"
     )
-    public void createUser(@ApiParam("User's model data") @RequestBody @Valid UserDto userDto) {
+    public void createUser(@ApiParam("User's model data") @RequestBody UserDto userDto) {
         userService.create(userDto);
     }
 
@@ -71,7 +72,7 @@ public class UserRestController {
     )
     public void updateUser(
             @ApiParam("User's id") @PathVariable @Positive int id,
-            @ApiParam("User's model data") @RequestBody @Valid UserDto userDto) {
+            @ApiParam("User's model data") @RequestBody UserDto userDto) {
         userService.updateById(id, userDto);
     }
 
