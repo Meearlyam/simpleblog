@@ -7,17 +7,21 @@ import com.innowisegroup.simpleblog.exception.UserValidationException;
 import java.util.List;
 
 public interface UserService {
-    List<UserDto> getAllUsers();
-    UserDto getUserById(long id);
-    void createUser(UserDto userDTO) throws UserValidationException;
-    void updateUser(long id, UserDto userDTO);
-    void deleteUser(long id);
+    List<UserDto> findAll();
+    UserDto findById(long id);
+    void create(UserDto userDTO) throws UserValidationException;
+    void updateById(long id, UserDto userDTO);
+    void deleteById(long id);
 
-    List<String> getUsersPasswords();
-    List<UserDto> getSortedByPasswordUsersByRole(UserRole role);
-    List<UserDto> getUsersWithCapitalizedNames();
-    List<UserDto> getUsersOrderByLastnameDesc();
-    List<UserDto> getUsersOrderByRole();
-    List<UserDto> findUsersByName(String name);
-    List<UserDto> findUsersByLastnameOrderByName(String lastname);
+    List<String> getAllPasswords();
+    List<UserDto> findSortedByPasswordUsersByRole(UserRole role);
+    List<UserDto> findAllWithCapitalizedNames();
+    List<UserDto> findAllOrderedByLastnameDesc();
+    List<UserDto> findAllOrderedByRole();
+    List<UserDto> findByName(String name);
+    List<UserDto> findByLastnameOrderedByName(String lastname);
+
+    List<UserDto> findAllSortedByEmailDescending();
+    List<UserDto> findByPageWithNumAndSize(int pageNum, int pageSize);
+    List<UserDto> findByFirstPageWithSizeSortedByLastname(int pageSize);
 }
