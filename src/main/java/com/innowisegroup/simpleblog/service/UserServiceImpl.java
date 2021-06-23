@@ -1,7 +1,6 @@
 package com.innowisegroup.simpleblog.service;
 
 import com.innowisegroup.simpleblog.dto.UserDto;
-import com.innowisegroup.simpleblog.exception.UserValidationException;
 import com.innowisegroup.simpleblog.model.User;
 import com.innowisegroup.simpleblog.model.UserRole;
 import com.innowisegroup.simpleblog.repository.UserRepository;
@@ -54,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(UserDto userDto) throws UserValidationException {
+    public void create(UserDto userDto) {
         userRepository.save(
                 userMapper.convertToEntity(userDto)
         );
