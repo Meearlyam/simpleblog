@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,4 +50,8 @@ public class User implements Serializable {
 
     @Column
     private UserRole role;
+
+    @Column
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] photo;
 }

@@ -15,10 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -61,8 +66,15 @@ public class UserRestController {
             value = "Creates new user",
             notes = "Provide valid user data to create new user"
     )
-    public void createUser(@ApiParam("User's model data") @RequestBody UserDto userDto) {
-        userService.create(userDto);
+    public void createUser(@ApiParam("User's photo") @RequestParam(required = false) MultipartFile photo,
+                           @ApiParam("User's model data") @RequestBody UserDto userDto) {
+        try {
+            userDto.setPhoto(photo.getBytes());
+            userService.create(userDto);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @PutMapping("/{id}")
@@ -72,8 +84,26 @@ public class UserRestController {
     )
     public void updateUser(
             @ApiParam("User's id") @PathVariable @Positive int id,
-            @ApiParam("User's model data") @RequestBody UserDto userDto) {
-        userService.updateById(id, userDto);
+            @ApiParam("User's photo") @RequestBody(required = false) MultipartFile photo,
+            @ApiParam("User's name") @RequestParam String name,
+            @ApiParam("User's lastname") @RequestParam String lastname,
+            @ApiParam("User's email") @Email @RequestParam String email,
+            @ApiParam("User's password") @Size(min = 8) @RequestParam String password,
+            @ApiParam("User's role") @RequestParam UserRole role
+            ) {
+        try {
+            UserDto userDto = new UserDto();
+            userDto.setId(id);
+            userDto.setName(name);
+            userDto.setLastname(lastname);
+            userDto.setEmail(email);
+            userDto.setPassword(password);
+            userDto.setRole(role);
+            userDto.setPhoto(photo.getBytes());
+            userService.updateById(id, userDto);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @DeleteMapping("/{id}")
