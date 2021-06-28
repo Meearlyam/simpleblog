@@ -4,10 +4,11 @@ import com.innowisegroup.simpleblog.dto.UserDto;
 import com.innowisegroup.simpleblog.model.UserRole;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     List<UserDto> findAll();
-    UserDto findById(long id);
+    Optional<UserDto> findById(long id);
     void create(UserDto userDTO);
     void updateById(long id, UserDto userDTO);
     void deleteById(long id);

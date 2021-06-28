@@ -7,6 +7,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Positive;
@@ -57,8 +64,8 @@ public class UserRestController {
             response = UserDto.class
     )
     public UserDto getUserById(
-            @ApiParam("User's id") @PathVariable @Positive int id) {
-        return userService.findById(id);
+            @ApiParam("User's id") @PathVariable @Positive int id) throws ResponseStatusException {
+        return userService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
@@ -242,5 +249,19 @@ public class UserRestController {
     public List<UserDto> getUsersByFirstPageWithSizeSortedByLastname(
             @ApiParam("Size of the page") @PathVariable @Positive int pageSize) {
         return userService.findByFirstPageWithSizeSortedByLastname(pageSize);
+    }
+
+    @GetMapping(value = "download/photo/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ApiOperation(
+            value = "Downloads photo of user by id",
+            notes = "Provide user id to download his photo"
+    )
+    public ResponseEntity<Resource> downloadUserPhoto(@ApiParam("User's id") @PathVariable @Positive int id) {
+        UserDto userDto = userService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ByteArrayResource resource = new ByteArrayResource(userDto.getPhoto());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + userDto.getName() + "_"
+                + userDto.getLastname() + ".jpg\"")
+                .body(resource);
     }
 }
