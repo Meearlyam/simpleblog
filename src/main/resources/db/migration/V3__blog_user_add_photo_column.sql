@@ -1,0 +1,2 @@
+ALTER TABLE blog_user
+ADD COLUMN photo BYTEA;

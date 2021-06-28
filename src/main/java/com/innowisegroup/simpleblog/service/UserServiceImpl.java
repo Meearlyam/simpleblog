@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -46,10 +47,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findById(long id) {
+    public Optional<UserDto> findById(long id) {
         return userRepository.findById(id)
-                .map(userMapper::convertToDto)
-                .orElse(null);
+                .map(userMapper::convertToDto);
     }
 
     @Override

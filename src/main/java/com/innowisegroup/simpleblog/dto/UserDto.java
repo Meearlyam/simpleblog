@@ -37,4 +37,7 @@ public class UserDto {
 
     @ApiModelProperty(notes = "The user's role")
     private UserRole role;
+
+    @ApiModelProperty(notes = "The user's photo (image file)")
+    private byte[] photo;
 }
