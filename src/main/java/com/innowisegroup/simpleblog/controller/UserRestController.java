@@ -66,9 +66,21 @@ public class UserRestController {
             value = "Creates new user",
             notes = "Provide valid user data to create new user"
     )
-    public void createUser(@ApiParam("User's photo") @RequestParam(required = false) MultipartFile photo,
-                           @ApiParam("User's model data") @RequestBody UserDto userDto) {
+    public void createUser(
+            @ApiParam("User's photo") @RequestBody(required = false) MultipartFile photo,
+            @ApiParam("User's name") @RequestParam String name,
+            @ApiParam("User's lastname") @RequestParam String lastname,
+            @ApiParam("User's email") @Email @RequestParam String email,
+            @ApiParam("User's password") @Size(min = 8) @RequestParam String password,
+            @ApiParam("User's role") @RequestParam UserRole role
+    ) {
         try {
+            UserDto userDto = new UserDto();
+            userDto.setName(name);
+            userDto.setLastname(lastname);
+            userDto.setEmail(email);
+            userDto.setPassword(password);
+            userDto.setRole(role);
             userDto.setPhoto(photo.getBytes());
             userService.create(userDto);
         }
