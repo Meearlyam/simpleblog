@@ -5,8 +5,8 @@ spring:
 
   datasource:
     username: 'postgres'
-    password: 'JIT..waveMode'
-    url: 'jdbc:postgresql://localhost:5433/blogdb?useUnicode=true&characterEncoding=utf8;DB_CLOSE_DELAY=-1'
+    password: 'root'
+    url: 'jdbc:postgresql://db:5432/blogdb?useUnicode=true&characterEncoding=utf8;DB_CLOSE_DELAY=-1'
     driver-class-name: org.postgresql.Driver
 
 server:
