@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+
+  simpleblog:
+    build: .
+    ports:
+    - 8080:8080
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: blogdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
