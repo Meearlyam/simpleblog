@@ -46,6 +46,7 @@ dependencies {
     implementation 'javax.validation:validation-api'
     implementation 'org.hibernate.validator:hibernate-validator'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     compile 'org.flywaydb:flyway-core'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
